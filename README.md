@@ -25,4 +25,22 @@ https://www.kaggle.com/j316chuck/keras-bidirectional-lstm-baseline-lb-0-069/edit
 
 
 ## Future Work
-1) https://www.kaggle.com/c/march-machine-learning-mania-2017
+- https://www.kaggle.com/c/march-machine-learning-mania-2017
+(Each of them had simple models)
+- http://blog.kaggle.com/2017/05/19/march-machine-learning-mania-1st-place-winners-interview-andrew-landgraf/
+-Create own team efficiency ratings using regression models (calculate this) and distance travelled, (bayesian logistic regression model rstanarm package)
+-used mle of creating sample distributions of other people's models really interesting to guess what other people would predict and how to beat them.
+-Same predictions in both submissions except championship game in which each team given 100% chance of winning
+
+- http://blog.kaggle.com/2016/05/10/march-machine-learning-mania-2016-winners-interview-1st-place-miguel-alomar/
+-random forest and adaboost, key features to test is penalize a team who hasn't played against best teams, offensive vs defensive efficiency.35% reading forums, 15% manipulating data, 25% building models, and 25% evaluating results. (I think that's a great spread, 40% reading others 10% manipulating data, 25% building and testing models, 25% evaluating results)
+-training time is small. 
+
+- http://blog.kaggle.com/2015/04/17/predicting-march-madness-1st-place-finisher-zach-bradshaw/
+(not useful)
+
+- http://blog.kaggle.com/2014/04/21/qa-with-gregory-and-michael-1st-place-in-march-ml-mania/ 
+(Ken Pomeroy's data and margin of victory model (actual spread posted in Las Vegas for each game), using logistic regression. weighted average of two probabilities
+-Las Vegas line is absolutely increible **********
+-1) simple model 2) specific loss function 3) las vegas model 4) margin of victory 5) logistic regression. 6) use previous games 7) ignored seed number
+-simple logistic regression seen multiple times for probabilities (or ridge)  
