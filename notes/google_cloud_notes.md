@@ -1,4 +1,4 @@
-## Google Cloud Notes
+# Google Cloud Notes
 Notes from the DSS Google Cloud March Madness Challenge
 
 ## Understanding the Data
