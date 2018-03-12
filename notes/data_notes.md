@@ -18,7 +18,7 @@ There is a lot of data for this challenge and so this document serves to clarify
 -Results of NCAA in a same way as Regular Season Compact 
 
 ## Team Box Scores
-- WFGM - field goals made (by the winning team)
+WFGM - field goals made (by the winning team)
 WFGA - field goals attempted (by the winning team)
 WFGM3 - three pointers made (by the winning team)
 WFGA3 - three pointers attempted (by the winning team)

@@ -1,0 +1,93 @@
+Motto:
+-Strength and growth come only through continuous effort and struggle.” — Napoleon Hill
+-“A person who is happy is not happy because everything is right in his life, he is happy because his attitude towards everything in his life is right.” — Sundar Pichai, Google Inc. CEO
+-Less is more. Anyone can make it hard, but only the expert can make things simple. 
+Implement simple models. 
+
+Models to implement
+1 Pure neural network 
+https://www.kaggle.com/dicksonchin93/collaborative-filtering 
+https://github.com/adeshpande3/March-Madness-2017/blob/master/Applying%20Deep%20Learning.ipynb
+https://github.com/wdg3/march-madness/blob/master/source/madness.py
+https://www.kaggle.com/boyadzhi/cross-validation-on-any-year
+https://www.kaggle.com/aikinogard/cf-starter-with-keras-0-560136 (different features, softmax)
+2 Ranking system ensemble 
+https://www.kaggle.com/jdp6ax/bayesian-ncaam-predictions
+https://fivethirtyeight.com/features/how-our-march-madness-predictions-work/ (use five thirty eight to predict the rating)
+3 Rating system feature 
+https://www.kaggle.com/lpkirwin/fivethirtyeight-elo-ratings
+4 Features (10+)
+https://www.kaggle.com/lnatml/feature-engineering-with-advanced-stats egular season wins,fg , rebounding, and points, and turnovers/steal
+https://github.com/adeshpande3/March-Madness-2017/blob/master/ last 10 game streak. 
+5 Specific features (Google Features) 
+-win lose ratio
+-point differnetial
+-strength of opponents
+-seed matters (difference in seed numbers and percentage of win)
+-recent performance last 10 games. 
+-efg, 3pt percentage, assists to turnovers, rebounding marging, effective shooting percentage. 
+-variance, 3 pointers and variances
+6 The Pomeroy model. 
+https://github.com/sfirke/predicting-march-madness/blob/master/scripts/05_make_predictions.R
+7 Ensemble/Evaluate
+
+Notes
+-No team fallen 1 - 16
+-2018_data file submission
+
+Data
+-Ken Pomeroy model used by everyone
+
+Features
+-Offensive rebound important. 
+-Can do pretty well by just using ELO + 16 original features. presented by team. 
+-Rating system in massey ordinals Rating system in Massey Ordinals
+-Elo rating system https://www.kaggle.com/lpkirwin/fivethirtyeight-elo-ratings
+
+
+Models. 
+-Logistic regression 
+-Neural network https://www.kaggle.com/amitkumarjaiswal/basic-starter-kernel-ncaa-men-s-dataset
+-Support vector machines
+-Random forests
+-Gradient tree boosted classifier
+-Train with 5 fold cross validation. 
+-Used f1 score balance of precision recall 
+Pseudocode for testing model
+# Build the working data.
+X, y = build_season_data(all_data)
+model = linear_model.LogisticRegression()
+cross_validation.cross_val_score(model, numpy.array(X), numpy.array(y), cv=10, scoring='accuracy', n_jobs=-1).mean(). can use f1. 
+model.fit(X, y) 
+
+Links
+https://github.com/harvitronix/kaggle-march-madness-machine-learning/blob/master/mm.py (look for testing and modelling results and elo results) 
+https://github.com/sfirke/predicting-march-madness/blob/master/scripts/05_make_predictions.R
+Use for ken pomeroy model. Look at it over the spring break week to see how to use R to parse data. 
+https://docs.google.com/spreadsheets/d/1AauzEVB-T01TqI2hY81sT6i-gloLwPbTnh8tqsw-TYY/edit#gid=1434546871
+https://www.kaggle.com/c/march-machine-learning-mania-2016/discussion/18896 (Vegas spreads since 2009 maybe)
+https://www.kaggle.com/amitkumarjaiswal/basic-starter-kernel-ncaa-men-s-dataset (Neural network)
+https://www.kaggle.com/jdp6ax/bayesian-ncaam-predictions (Rating system in Massey Ordinals
+)
+https://www.kaggle.com/dicksonchin93/collaborative-filtering (run Keras on all the games with just score and feature.)
+https://www.kaggle.com/lpkirwin/fivethirtyeight-elo-ratings
+https://github.com/adeshpande3/March-Madness-2017/blob/master/March%20Madness%202017.ipynb
+
+Good sample submssion: https://github.com/adeshpande3/March-Madness-2017/blob/master/
+March%20Madness%202017.ipynb that has features 
+Regular Season Wins
+Points per game season average
+Points per game allowed season average
+Whether or not in Power 6 conference (ACC, Big Ten, Big 12, SEC, Pac 12, Big East) - Binary label
+Number of 3's per game
+Turnovers per game average
+Assists per game average
+Conference Championship - binary label
+Conference Tournament Championship - binary label
+Tournament Seed
+Strength of Schedule
+Simple Rating System
+Rebounds per game average
+Steals per game average
+Number of NCAA appearances since 1985
+Whether the team is home or away or neutral (labels -1, 0, and 1)
