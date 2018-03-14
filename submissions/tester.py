@@ -1,14 +1,13 @@
 import pandas as pd
-import numpy as np
 import sys
 import math
 pd.options.mode.chained_assignment = None  # default='warn'
 
 input_file = None
-df = None 
+df = None
 submission_df = None
 predictions = {}
-test_years = [] 
+test_years = []
 
 def predict(row, year):
     mn = min(row['WTeamID'], row['LTeamID'])
@@ -30,13 +29,13 @@ def test():
     log_losses = []
     for year in test_years:
         log_loss, ncaa_df = evaluate(year)
-        print "Log loss of year {0} is {1}".format(year, log_loss)
+        print("Log loss of year {0} is {1}".format(year, log_loss))
         log_losses.append(log_loss)
     average = sum(log_losses) / len(log_losses)
-    print "Average log loss across the years {1} - {2} is {0}".format(average, test_years[0], test_years[-1])
-    return average, log_losses
+    print("Average log loss across the years {1} - {2} is {0}".format(average, test_years[0], test_years[-1]))
+    return (average, log_losses)
 
-def main(): 
+def main():
     global input_file, df, test_years, submission_df, predictions
     input_file = sys.argv[1]
     df = pd.read_csv('../input/NCAATourneyCompactResults.csv')
@@ -45,13 +44,9 @@ def main():
     submission_df = pd.read_csv(input_file)
     predictions = {}
     for index, row in submission_df.iterrows():
-	year, sid, eid = map(int, row['id'].split('_'))
-	predictions[(year, sid, eid)] = row['pred']	
+        year, sid, eid = map(int, row['id'].split('_'))
+        predictions[(year, sid, eid)] = row['pred']
     test()
- 
+
 if __name__ == "__main__":
     main()
-
-
-
-
