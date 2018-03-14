@@ -4,18 +4,34 @@ Motto:
 -Less is more. Anyone can make it hard, but only the expert can make things simple. 
 Implement simple models. 
 
-Models to implement
-1 Pure neural network 
-https://www.kaggle.com/dicksonchin93/collaborative-filtering 
-https://github.com/adeshpande3/March-Madness-2017/blob/master/Applying%20Deep%20Learning.ipynb
-https://github.com/wdg3/march-madness/blob/master/source/madness.py
-https://www.kaggle.com/boyadzhi/cross-validation-on-any-year
-https://www.kaggle.com/aikinogard/cf-starter-with-keras-0-560136 (different features, softmax)
-2 Ranking system ensemble 
-https://www.kaggle.com/jdp6ax/bayesian-ncaam-predictions
-https://fivethirtyeight.com/features/how-our-march-madness-predictions-work/ (use five thirty eight to predict the rating)
-3 Rating system feature 
-https://www.kaggle.com/lpkirwin/fivethirtyeight-elo-ratings
+
+Plan: 1 cross validate, train on 2014 - 2016. final test 2017
+
+Model: 30 min reading links, 1 hour getting it to work 1 hour new features/evaluation 1.5 hour testing + improve each model. 4 hours per model. 
+To Do/Important: keep cross validation clear, engineer features fast, less is more, cross validate and test well, ensemble at end, have time to submit. finish asap. 
+Schedule: Tommorow finish Features, Ranking system ensemble + rating system
+Wednesday Finish neural network + pomeroy by 6 enhance features by 11 (cross validation) 1 o clock ensemble 2 o clock choose model. 
+
+Done
+35 min understanding and merging code to run (getting the features) https://github.com/adeshpande3/March-Madness-2017/blob/master/March%20Madness%202017.ipynb
+
+Need to Do
+25 min implementing and getting it to take in inputs 2010 - 2015 (learning inputs) https://github.com/adeshpande3/March-Madness-2018/blob/master/DataPreprocessing.py 30 min done with inputs. 
+1 hour implementing submission file. done. with first file. 30 minutes with submission. 
+
+
+https://github.com/adeshpande3/March-Madness-2018/blob/master/MarchMadness2018.py
+1 hour add cross validation and enhance models with gridsearch + idealize workflow. 1 hour
+add work flow with different features + add different features. 1 hour
+https://www.kaggle.com/lnatml/feature-engineering-with-advanced-stats
+
+2 hours rating system feature.
+2 hours ranking system feature. 
+2 hours finish implemenitng Pomeroy 5 pm
+10 pm finish neural networks. 
+1 pm finish tuning models and testing 5 models. 2 pm. 1 2 . 2:30 ->  7 o clock :D 
+
+Implement
 4 Features (10+)
 https://www.kaggle.com/lnatml/feature-engineering-with-advanced-stats egular season wins,fg , rebounding, and points, and turnovers/steal
 https://github.com/adeshpande3/March-Madness-2017/blob/master/ last 10 game streak. 
@@ -27,9 +43,42 @@ https://github.com/adeshpande3/March-Madness-2017/blob/master/ last 10 game stre
 -recent performance last 10 games. 
 -efg, 3pt percentage, assists to turnovers, rebounding marging, effective shooting percentage. 
 -variance, 3 pointers and variances
+2 Ranking system ensemble 
+https://www.kaggle.com/jdp6ax/bayesian-ncaam-predictions
+https://fivethirtyeight.com/features/how-our-march-madness-predictions-work/(use five thirty eight to predict the rating)
+https://www.kaggle.com/kplauritzen/elo-ratings-in-python
+3 Rating system feature 
+https://www.kaggle.com/lpkirwin/fivethirtyeight-elo-ratings
+
 6 The Pomeroy model. 
 https://github.com/sfirke/predicting-march-madness/blob/master/scripts/05_make_predictions.R
+Try the five models listed above. 
+
+1 Pure neural network 
+https://www.kaggle.com/dicksonchin93/collaborative-filtering 
+https://github.com/adeshpande3/March-Madness-2017/blob/master/Applying%20Deep%20Learning.ipynb
+https://github.com/wdg3/march-madness/blob/master/source/madness.py
+https://www.kaggle.com/boyadzhi/cross-validation-on-any-year
+https://www.kaggle.com/aikinogard/cf-starter-with-keras-0-560136 (different features, softmax)
+
 7 Ensemble/Evaluate
+https://www.kaggle.com/c/march-machine-learning-mania-2015/discussion/12801
+https://www.kaggle.com/c/march-machine-learning-mania-2016/discussion/19587
+Two guys -> average 
+Training 2000 - 2013. 30000 (+ cross validation) Test data  2014 - 2015. (Test it and tune models accordingly)
+Hold out Final exam test 2016 - 2017 test on last day/final model date on last day final score. Evaluate models. Then use all of those predictions to run a logistic regression. Or you can do an average. 
+
+
+Cross validation: https://www.kaggle.com/boyadzhi/cross-validation-on-any-yearhttp://blog.kaggle.com/2015/06/29/scikit-learn-video-7-optimizing-your-model-with-cross-validation/
+1) They either use cv to cross validate or 2) Use train test split to validate 
+https://machinelearningmastery.com/metrics-evaluate-machine-learning-algorithms-python/ (negative log loss with cross validation)
+scipy.optimize.minimize
+https://github.com/eugeneyan/kaggle_otto/blob/master/7%20-%20Ensemble%20(sample).py
+
+cross validation good if training data is close to testing data. (not noisy
+train model on 80% train set. Validate against 20% local hold out. Ensemble by fitting predictions onto 20% local hold out. 
+
+
 
 Notes
 -No team fallen 1 - 16
@@ -61,6 +110,7 @@ cross_validation.cross_val_score(model, numpy.array(X), numpy.array(y), cv=10, s
 model.fit(X, y) 
 
 Links
+https://www.kaggle.com/maccam912/winner-by-seed (seed)
 https://github.com/harvitronix/kaggle-march-madness-machine-learning/blob/master/mm.py (look for testing and modelling results and elo results) 
 https://github.com/sfirke/predicting-march-madness/blob/master/scripts/05_make_predictions.R
 Use for ken pomeroy model. Look at it over the spring break week to see how to use R to parse data. 
@@ -91,3 +141,5 @@ Rebounds per game average
 Steals per game average
 Number of NCAA appearances since 1985
 Whether the team is home or away or neutral (labels -1, 0, and 1)
+
+https://docs.google.com/spreadsheets/d/1Y3G4rFsD7epDQsyJV361a8bfWJrvgzbjJA8suP-ecnE/edit#gid=1239415418 names
