@@ -1,0 +1,3 @@
+python Features.py 1994 2013 xTrainThree yTrainThree 2014 2017 xTestThree yTestThree
+
+python Evaluation.py 2014 2017 xTrainThree.npy yTrainThree.npy xTestThree.npy yTestThree.npy LogisticThree.csv
