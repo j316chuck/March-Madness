@@ -1,14 +1,17 @@
 
+# coding: utf-8
+
+# In[45]:
+
 
 #######################################################################################################################
 # Model implemented off of https://github.com/adeshpande3/March-Madness-2017/blob/master/March%20Madness%202017.ipynb #
 #######################################################################################################################
 
-from __future__ import division
-import collections
 import sklearn
 import pandas as pd
 import numpy as np
+import collections
 from sklearn.cross_validation import train_test_split
 from sklearn import svm
 from sklearn.svm import SVC
@@ -37,13 +40,13 @@ from utils import *
 
 
 
-# In[29]:
+# In[46]:
 
 
 #reading input
 data_dir = '../../input/'
-reg_season_compact_pd = pd.read_csv(data_dir + 'RegularSeasonCompactResults.csv')
-reg_season_detailed_pd = pd.read_csv(data_dir + 'RegularSeasonDetailedResults.csv')
+reg_season_compact_pd = pd.read_csv(data_dir + 'RegularSeasonCompactResults_Prelim2018.csv')
+reg_season_detailed_pd = pd.read_csv(data_dir + 'RegularSeasonDetailedResults_Prelim2018.csv')
 seasons_pd = pd.read_csv(data_dir + 'Seasons.csv')
 teams_pd = pd.read_csv(data_dir + 'Teams.csv')
 teamList = teams_pd['TeamName'].tolist()
@@ -53,13 +56,18 @@ tourney_seeds_pd = pd.read_csv(data_dir + 'NCAATourneySeeds.csv')
 conference_pd = pd.read_csv(data_dir + 'Conference.csv')
 tourney_results_pd = pd.read_csv(data_dir + 'TourneyResults.csv')
 NCAAChampionsList = tourney_results_pd['NCAA Champion'].tolist()
+massey_pd = pd.read_csv(data_dir + 'MasseyOrdinals.csv')
+ratings_pd = massey_pd.sort_values('RankingDayNum', ascending = False).drop_duplicates(['Season','SystemName','TeamID'])
+rankings_pd = ratings_pd.groupby(['Season', 'TeamID'], as_index = False).mean()
+ratings = pd.read_csv(data_dir + 'season_elos.csv')
+pomeroy = pd.read_csv(data_dir + 'ken_pom.csv')
 
 
-# In[30]:
+# In[47]:
+
 
 
 # feature extraction
-
 listACCteams = ['North Carolina','Virginia','Florida St','Louisville','Notre Dame','Syracuse','Duke','Virginia Tech','Georgia Tech','Miami','Wake Forest','Clemson','NC State','Boston College','Pittsburgh']
 listPac12teams = ['Arizona','Oregon','UCLA','California','USC','Utah','Washington St','Stanford','Arizona St','Colorado','Washington','Oregon St']
 listSECteams = ['Kentucky','South Carolina','Florida','Arkansas','Alabama','Tennessee','Mississippi St','Georgia','Ole Miss','Vanderbilt','Auburn','Texas A&M','LSU','Missouri']
@@ -76,21 +84,21 @@ def checkPower6Conference(team_id):
         return 0
 
 
-# In[31]:
+# In[48]:
 
 
 def getTeamID(name):
     return teams_pd[teams_pd['TeamName'] == name].values[0][0]
 
 
-# In[33]:
+# In[49]:
 
 
 def getTeamName(team_id):
     return teams_pd[teams_pd['TeamID'] == team_id].values[0][1]
 
 
-# In[32]:
+# In[50]:
 
 
 def getNumChampionships(team_id):
@@ -98,7 +106,7 @@ def getNumChampionships(team_id):
     return NCAAChampionsList.count(name)
 
 
-# In[34]:
+# In[51]:
 
 
 def getListForURL(team_list):
@@ -119,7 +127,7 @@ def getListForURL(team_list):
         url = base + team + '/'
 
 
-# In[35]:
+# In[52]:
 
 
 # Function for handling the annoying cases of Florida and FL, as well as State and St
@@ -136,14 +144,14 @@ def handleCases(arr):
     return arr
 
 
-# In[36]:
+# In[53]:
 
 
 def getTourneyAppearances(team_id):
     return len(tourney_seeds_pd[tourney_seeds_pd['TeamID'] == team_id].index)
 
 
-# In[37]:
+# In[54]:
 
 
 def checkConferenceChamp(team_id, year):
@@ -159,7 +167,7 @@ def checkConferenceChamp(team_id, year):
         return 0
 
 
-# In[38]:
+# In[55]:
 
 
 def checkConferenceTourneyChamp(team_id, year):
@@ -172,7 +180,7 @@ def checkConferenceTourneyChamp(team_id, year):
         return 0
 
 
-# In[40]:
+# In[56]:
 
 
 def handleDifferentCSV(df):
@@ -282,8 +290,26 @@ def handleDifferentCSV(df):
     df['School'] = df['School'].replace('Maryland-Eastern Shore', 'MD E Shore')
     return df
 
-# In[52]:
 
+# In[57]:
+
+
+def getRank(team_id, year):
+    avg_rank = rankings_pd.loc[(rankings_pd.Season == year) & (rankings_pd.TeamID == team_id)]
+    if len(avg_rank) == 0:
+        avg_rank = 500
+    else:
+        avg_rank = avg_rank.values[0][3]
+    return avg_rank
+
+def getRating(team_id, year):
+    rating = ratings.loc[(ratings.season == year) & (ratings.team_id == team_id)]
+    if len(rating) == 0:
+        rating = 1000
+    else:
+        rating = rating.values[0][1]
+    return rating
+    
 
 def getSeasonData(team_id, year):
     year_data_pd = reg_season_compact_pd[reg_season_compact_pd['Season'] == year]
@@ -353,13 +379,32 @@ def getSeasonData(team_id, year):
         avgAssists = totalAssists/numGames
         avgRebounds = totalRebounds/numGames
         avgSteals = totalSteals/numGames
+    return [numWins, avgPointsScored, avgPointsAllowed, checkPower6Conference(team_id), avg3sMade, avgAssists, avgTurnovers, 
+    checkConferenceChamp(team_id, year), checkConferenceTourneyChamp(team_id, year), tournamentSeed,
+            sos, srs, avgRebounds, avgSteals, getTourneyAppearances(team_id), getNumChampionships(team_id)]
     #return [numWins, avgPointsScored, avgPointsAllowed, checkPower6Conference(team_id), avg3sMade, avgAssists, avgTurnovers, 
     #checkConferenceChamp(team_id, year), checkConferenceTourneyChamp(team_id, year), tournamentSeed,
-    #        sos, srs, avgRebounds, avgSteals, getTourneyAppearances(team_id), getNumChampionships(team_id)]
-    return [numWins, avgPointsScored, avgPointsAllowed]
+    #        sos, srs, avgRebounds, avgSteals, getTourneyAppearances(team_id), getNumChampionships(team_id), getRank(team_id, year), getRating(team_id, year)]
+    '''r = pomeroy[(pomeroy.team_id == team_id) & (pomeroy.year == year)].values
+    if len(r) == 0:
+        em = 0.0
+        offense = 0
+        defense = 0
+        tempo = 0
+        ranked = 0
+    else:
+        r = r[0]
+        em = r[3]
+        offense = r[4]
+        defense = r[5]
+        tempo = r[6]
+        ranked = int(r[8] == 'YES')
+    return [em, offense, defense, tempo, ranked]'''
+    #return [offense, defense, tempo]
+    #return [r.EM, r.adj_off, r.adj_def, r.adj_tempo, int(r.ranked == 'YES'), r.pre_seas_rank_all]
 
 
-# In[53]:
+# In[58]:
 
 
 def compareTwoTeams(id_1, id_2, year):
@@ -369,7 +414,7 @@ def compareTwoTeams(id_1, id_2, year):
     return diff
 
 
-# In[54]:
+# In[59]:
 
 
 def createSeasonDict(year):
@@ -379,13 +424,10 @@ def createSeasonDict(year):
         team_vector = getSeasonData(team_id, year)
         seasonDictionary[team_id] = team_vector
     return seasonDictionary
+createSeasonDict(2016)
 
 
-# In[55]:
-
-
-
-# In[56]:
+# In[60]:
 
 
 def getHomeStat(row):
@@ -398,7 +440,7 @@ def getHomeStat(row):
     return home
 
 
-# In[71]:
+# In[61]:
 
 
 def createTrainingSet(years):
@@ -459,27 +501,18 @@ def createTrainingSet(years):
     return xTrain, yTrain
 
 
-# In[72]:
+# In[ ]:
 
 
-def createFeatureMatrix(train_years = range(1994, 2014), xName = 'xTrain', yName = 'yTrain'):
+def createTrainFeatureMatrix(train_years = range(1994, 2014), xName = 'xTrain', yName = 'yTrain'):
     xTrain, yTrain = createTrainingSet(train_years) 
     np.save(data_dir + 'FeatureMatrix/' + xName, xTrain)
     np.save(data_dir + 'FeatureMatrix/' + yName, yTrain)
     
 
 
-# In[25]:
+# In[ ]:
 
-if __name__ == '__main__':
-    train_start = int(sys.argv[1])
-    train_end = int(sys.argv[2]) + 1
-    train_xName = sys.argv[3]
-    train_yName = sys.argv[4]
-    test_start = int(sys.argv[5])
-    test_end = int(sys.argv[6]) + 1
-    test_xName = sys.argv[7]
-    test_yName = sys.argv[8]
-    createFeatureMatrix(range(train_start, train_end), train_xName, train_yName)
-    createFeatureMatrix(range(test_start, test_end), test_xName, test_yName)
+
+
 

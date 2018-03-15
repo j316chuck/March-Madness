@@ -43,6 +43,8 @@ https://github.com/adeshpande3/March-Madness-2017/blob/master/ last 10 game stre
 -recent performance last 10 games. 
 -efg, 3pt percentage, assists to turnovers, rebounding marging, effective shooting percentage. 
 -variance, 3 pointers and variances
+
+
 2 Ranking system ensemble 
 https://www.kaggle.com/jdp6ax/bayesian-ncaam-predictions
 https://fivethirtyeight.com/features/how-our-march-madness-predictions-work/(use five thirty eight to predict the rating)

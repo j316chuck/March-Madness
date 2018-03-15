@@ -4,6 +4,7 @@
 #######################################################################################################################
 # Model implemented off of https://github.com/adeshpande3/March-Madness-2017/blob/master/March%20Madness%202017.ipynb #
 #######################################################################################################################
+import cPickle as pickle
 import sklearn
 import pandas as pd
 import numpy as np
@@ -36,7 +37,7 @@ from utils import *
 from sklearn import metrics
 from sklearn.metrics import make_scorer
 from Features import createSeasonDict
-
+import os.path
 
 #reading input
 data_dir = '../../input/'
@@ -101,6 +102,7 @@ def predictGame(team_1_vector, team_2_vector, home, model):
 
 season_dicts = {}
 for year in test_year:
+    print "Creating year {}".format(year)
     season_dicts[year] = createSeasonDict(year)
 
 
@@ -127,7 +129,6 @@ def createPredictionResults():
 
 results = createPredictionResults()
 
-
 def toCSV():
     firstRow = [[0 for x in range(2)] for x in range(1)]
     firstRow[0][0] = 'ID'
@@ -137,7 +138,6 @@ def toCSV():
         writer.writerows(firstRow)
         writer.writerows(results)
 toCSV()
-
 
 
 def predict(row, year):
@@ -158,16 +158,16 @@ def evaluate(year):
 
 
 # In[137]:
-
-
 predictions = {}
 def test():
     import warnings
     warnings.filterwarnings("ignore")
     log_losses = []
     for row in results:
-            year, sid, eid = map(int, row[0].split('_'))
-            predictions[(year, sid, eid)] = row[1]
+        year, sid, eid = map(int, row[0].split('_'))
+        predictions[(year, sid, eid)] = row[1]
+    
+    print(predictions)
     for year in test_year:
         log_loss = evaluate(year)
         log_losses.append(log_loss)
